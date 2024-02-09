@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- Topic Remaps and Params  -->
+  <node name="foo_throttler" type="throttle" pkg="topic_tools" args="messages /vrpn_client_node/samwise/pose 100 /mavros/vision_pose/pose" />
+
   <arg name="vicon_ip" default=""/>
   <arg name="fcu_url" default=""/>
   <arg name="gcs_url" default=""/>
-
 
   <!-- Spin-up Vicon Stream to ROS -->
   <include file="$(find vrpn_client_ros)/launch/sample.launch">
@@ -15,9 +17,7 @@
   <include file="$(find mavros)/launch/px4.launch">
     <arg name="fcu_url" value="$(arg fcu_url)"/>
     <arg name="gcs_url" value="$(arg gcs_url)"/>
+    <param name="timesync" value="0.0"/>
   </include>
-
-  <!-- Remap Vicon Pose Topic to Mavros Pose Topic -->
-  <remap from="/vrpn_client_node/samwise/pose" to="/mavros/vision_pose/pose"/>
 
 </launch>
